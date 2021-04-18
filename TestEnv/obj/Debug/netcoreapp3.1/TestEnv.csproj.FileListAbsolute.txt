@@ -1,0 +1,16 @@
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\TestEnv.exe
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\TestEnv.deps.json
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\TestEnv.runtimeconfig.json
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\TestEnv.runtimeconfig.dev.json
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\TestEnv.dll
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\TestEnv.pdb
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\MyCalculator.Parsers.dll
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\bin\Debug\netcoreapp3.1\MyCalculator.Parsers.pdb
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.csprojAssemblyReference.cache
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.AssemblyInfoInputs.cache
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.AssemblyInfo.cs
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.csproj.CoreCompileInputs.cache
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.csproj.CopyComplete
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.dll
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.pdb
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\TestEnv\obj\Debug\netcoreapp3.1\TestEnv.genruntimeconfig.cache

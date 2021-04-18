@@ -7,9 +7,9 @@ namespace MyCalculator.Parsers
 {
     public class TextTokenizer : ITokenizer
     {
-        private readonly TokenValidator _validator;
+        private readonly ITokenValidator _validator;
 
-        public TextTokenizer(TokenValidator validator)
+        public TextTokenizer(ITokenValidator validator)
         {
             _validator = validator;
         }
@@ -19,22 +19,21 @@ namespace MyCalculator.Parsers
             string currentNumber = "";
             foreach (var character in input)
             {
-                if(_validator.IsValid(character.ToString()))
+                if(!_validator.IsValid(character.ToString()))
                 {
                     throw new InvalidTokenException($"{character} is not a valid character");
                 }
 
                 if (!_validator.IsNumber(character.ToString()))
                 {
-                    if (character != ' ')
-                    {
-                        output.Add(character.ToString());
-                    }
-
                     if (!string.IsNullOrEmpty(currentNumber))
                     {
                         output.Add(currentNumber);
                         currentNumber = "";
+                    }
+                    if (character != ' ')
+                    {
+                        output.Add(character.ToString());
                     }
                 }
                 else
@@ -42,6 +41,7 @@ namespace MyCalculator.Parsers
                     currentNumber += character.ToString();
                 }
             }
+            output.Add(currentNumber);
 
             return output;
         }

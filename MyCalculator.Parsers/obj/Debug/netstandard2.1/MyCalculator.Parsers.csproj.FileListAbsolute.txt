@@ -1,0 +1,9 @@
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\obj\Debug\netstandard2.1\MyCalculator.Parsers.csprojAssemblyReference.cache
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\obj\Debug\netstandard2.1\MyCalculator.Parsers.AssemblyInfoInputs.cache
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\obj\Debug\netstandard2.1\MyCalculator.Parsers.AssemblyInfo.cs
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\obj\Debug\netstandard2.1\MyCalculator.Parsers.csproj.CoreCompileInputs.cache
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\bin\Debug\netstandard2.1\MyCalculator.Parsers.deps.json
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\bin\Debug\netstandard2.1\MyCalculator.Parsers.dll
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\bin\Debug\netstandard2.1\MyCalculator.Parsers.pdb
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\obj\Debug\netstandard2.1\MyCalculator.Parsers.dll
+C:\Users\Claudiu\Desktop\Master\Sem2\CSS\MyCalculator\MyCalculator.Parsers\obj\Debug\netstandard2.1\MyCalculator.Parsers.pdb

@@ -1228,7 +1228,7 @@
       },
       "MyCalculator.Parsers/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
+        "framework": ".NETStandard,Version=v2.1",
         "compile": {
           "bin/placeholder/MyCalculator.Parsers.dll": {}
         },

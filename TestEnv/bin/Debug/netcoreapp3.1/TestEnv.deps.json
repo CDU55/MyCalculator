@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "TestEnv/1.0.0": {
+        "dependencies": {
+          "MyCalculator.Parsers": "1.0.0"
+        },
+        "runtime": {
+          "TestEnv.dll": {}
+        }
+      },
+      "MyCalculator.Parsers/1.0.0": {
+        "runtime": {
+          "MyCalculator.Parsers.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TestEnv/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MyCalculator.Parsers/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
