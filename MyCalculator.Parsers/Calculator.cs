@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MyCalculator.Parsers.Exceptions;
 
 namespace MyCalculator.Parsers
 {
@@ -16,7 +17,7 @@ namespace MyCalculator.Parsers
 
             for (int count = 0; count < minLen; count++)
             {
-                if (firstNumber[count] >= secondNumber[count])
+                if (firstNumber[count] + carriage >= secondNumber[count])
                 {
                     result[count] = firstNumber[count] - secondNumber[count] + carriage;
                     carriage = 0;
@@ -132,53 +133,98 @@ namespace MyCalculator.Parsers
             return FormatResultArray(result);
         }
 
-        public int[] PowNumbers(int[] baseNumber, int[] exponent)
-        {
-            
-        }
-
         public int[] DivideNumbers(int[] firstNumber, int[] secondNumber)
         {
             int skip = 0;
-            int take = 0;
+            int take = secondNumber.Length;
             var result = new int[0];
+            if (IsMultipleZero(firstNumber))
+            {
+                return new int[] {0};
+            }
+            var remainder = new int[0];
             var reversedFirstNumber = firstNumber.Reverse().ToArray();
             var reversedSecondNumber = secondNumber.Reverse().ToArray();
+            int[] temporaryDivident;
             while (skip < firstNumber.Length)
             {
-                var temporaryDivident = reversedFirstNumber.Skip(skip).Take(take);
-                while(Greater(reversedSecondNumber, temporaryDivident.ToArray()))
+                var currentSlice=reversedFirstNumber.Skip(skip).Take(take).ToArray();
+                if (!IsZero(remainder))
                 {
-                    take++;
-                    temporaryDivident = firstNumber.Skip(skip).Take(take);
+                    temporaryDivident = new int[currentSlice.Length + remainder.Length];
+                    remainder.CopyTo(temporaryDivident, 0);
+                    currentSlice.CopyTo(temporaryDivident, remainder.Length);
+                }
+                else
+                {
+                    temporaryDivident = currentSlice;
                 }
 
-                var currentResult = DivideNumbersSubtraction(temporaryDivident.Reverse().ToArray(), secondNumber).Reverse().ToArray();
-                temporaryDivident = Mod(temporaryDivident.Reverse().ToArray(), secondNumber).Reverse().ToArray();
+                while (Greater(reversedSecondNumber, temporaryDivident))
+                {
+                    take++;
+                    currentSlice = reversedFirstNumber.Skip(skip).Take(take).ToArray();
+                    if (!IsZero(remainder))
+                    {
+                        temporaryDivident = new int[currentSlice.Length + remainder.Length];
+                        remainder.CopyTo(temporaryDivident, 0);
+                        currentSlice.CopyTo(temporaryDivident, remainder.Length);
+                    }
+                    else
+                    {
+                        temporaryDivident = currentSlice;
+                    }
+
+                    if (skip + take == reversedFirstNumber.Length)
+                    {
+                        break;
+                    }
+                }
+
+                if (Smaller(temporaryDivident, reversedSecondNumber,false) && !IsMultipleZero(temporaryDivident))
+                {
+                    throw new NotDivisibleException(
+                        $"{firstNumber.ConvertToString()} is not divisible by {secondNumber.ConvertToString()}");
+                }
+                var currentResult = DivideNumbersSubtraction(temporaryDivident.Reverse().ToArray(), secondNumber,out remainder).Reverse().ToArray();
+                remainder = remainder.Reverse().ToArray();
                 var temporaryResult = new int[result.Length + currentResult.Length];
                 result.CopyTo(temporaryResult,0);
                 currentResult.CopyTo(temporaryResult,result.Length);
                 result = temporaryResult;
                 skip += take;
+                take += (secondNumber.Length - remainder.Length);
+                if (skip + take > reversedSecondNumber.Length)
+                {
+                    take = reversedSecondNumber.Length - skip;
+                }
             }
 
-            return result;
+            if (!IsZero(remainder))
+            {
+                throw new NotDivisibleException(
+                    $"{firstNumber.ConvertToString()} is not divisible by {secondNumber.ConvertToString()}");
+            }
+
+            return result.Reverse().ToArray();
         }
-        public int[] DivideNumbersSubtraction(int[] firstNumber, int[] secondNumber)
+        public int[] DivideNumbersSubtraction(int[] firstNumber, int[] secondNumber,out int[] remainder)
         {
             int[] result = new int[firstNumber.Length] ;
-            while (Greater(firstNumber,secondNumber))
+            while (Greater(firstNumber,secondNumber) || Equal(firstNumber,secondNumber))
             {
                 firstNumber = SubtractNumbers(firstNumber, secondNumber);
                 result = AddNumbers(result, new int[] {1});
             }
-            return result;
+
+            remainder = FormatResultArray(firstNumber);
+            return FormatResultArray(result);
         }
 
         public int[] Mod(int[] firstNumber, int[] secondNumber)
         {
             int[] result = new int[firstNumber.Length];
-            while (Greater(firstNumber, secondNumber))
+            while (Greater(firstNumber, secondNumber) || Equal(firstNumber,secondNumber))
             {
                 firstNumber = SubtractNumbers(firstNumber, secondNumber);
             }
@@ -186,48 +232,88 @@ namespace MyCalculator.Parsers
             return firstNumber;
         }
 
-        public bool IsDivisible(int[] firstNumber, int[] secondNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsSquareNumber(int[] number)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsZero(int[] number)
         {
-            throw new NotImplementedException();
+            if (number.Length == 1 && number[0] == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool IsMultipleZero(int[] number)
+        {
+            for (int count = number.Length - 1; count >= 0; count--)
+            {
+                if (number[count] != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public int[] RaiseToPower(int[] firstNumber, int[] secondNumber)
         {
-            int[] temp;
             if (IsZero(secondNumber))
             {
                 return new int[1] { 1 };
             }
             if (secondNumber.Length == 1 && secondNumber[0] == 1)
             {
-                return secondNumber;
+                return firstNumber;
             }
 
-            temp = PowNumbers(secondNumber, DivideNumbers(secondNumber, new[] { 2 }));
-
-            if (secondNumber[secondNumber.Length] % 2 == 0)
+            int[] temp = MultiplyNumbers(firstNumber, firstNumber);
+            if (secondNumber[0] % 2 == 0)
             {
-                return MultiplyNumbers(temp, temp);
+                return RaiseToPower(temp, DivideNumbers(secondNumber,new int[]{2}));
             }
             else
             {
-                return MultiplyNumbers(secondNumber, MultiplyNumbers(temp, temp));
+                return MultiplyNumbers(firstNumber, RaiseToPower(temp,DivideNumbers(SubtractNumbers(secondNumber,new []{1}),new []{2})));
             }
         }
 
-        public int[] SquareRoot(int[] fistNumber)
+        public int[] SquareRoot(int[] number)
         {
-            throw new NotImplementedException();
+            int[] one = new[] { 1 };
+            int[] left = new[] { 1 }, right = number;
+
+            while (Smaller(left,right) || Equal(left,right))
+            {
+                var sum = AddNumbers(left, right);
+                if (sum[0] % 2 == 1)
+                {
+                    sum = SubtractNumbers(sum, new int[] {1});
+                }
+                int[] mid = DivideNumbers(sum, new []{2});
+
+                // Check if mid is perfect
+                // square
+                if (Equal(MultiplyNumbers(mid, mid), number))
+                {
+                    return mid;
+                }
+
+                // Mid is small -> go right to
+                // increase mid
+                if (Smaller(MultiplyNumbers(mid, mid), number))
+                {
+                    left = AddNumbers(mid, one);
+                }
+
+                // Mid is large -> to left
+                // to decrease mid
+                else
+                {
+                    right = SubtractNumbers(mid, one);
+                }
+            }
+            return new[] { -1 };
         }
 
         public bool Greater(int[] firstNumber, int[] secondNumber,bool reversed=true)
@@ -316,7 +402,7 @@ namespace MyCalculator.Parsers
         private int[] FormatResultArray(int[] result)
         {
             // if the number is zero return an array with only a digit
-            if (IsZero(result))
+            if (IsMultipleZero(result))
             {
                 return new int[1];
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using MyCalculator.Parsers;
 
 namespace TestEnv
@@ -7,14 +8,11 @@ namespace TestEnv
     {
         static void Main(string[] args)
         {
-            TextTokenizer tokenizer = new TextTokenizer(new TokenValidator());
-            var result = tokenizer.Tokenize("2  + 5  * #16");
-            PostfixConverter converter = new PostfixConverter(new TokenValidator());
-            var postfix = converter.ConvertToPostfix(result);
-            foreach (var element in postfix)
-            {
-             Console.WriteLine(element);   
-            }
+            var number1 = "121";
+            var number1Arr = number1.ConvertToArrayNumber();
+            Calculator calc = new Calculator();
+            var result = calc.SquareRoot(number1Arr);
+            Console.WriteLine(result.ConvertToString());
 
         }
     }

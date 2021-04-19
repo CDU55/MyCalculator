@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MyCalculator.Parsers;
 
 namespace MyCalculator.UI
 {
@@ -13,9 +16,10 @@ namespace MyCalculator.UI
         public AutomaticMode()
         {
             InitializeComponent();
-            InputFileLabel.Text = "";
-            OutputFileLabel.Text = "";
+            InputFileNameLabel.Text = "";
+            OutputFileNameLabel.Text = "";
             MessageLabel.Text = "";
+
         }
         private void BackButton_Click(object sender, EventArgs e)
         {
@@ -24,19 +28,17 @@ namespace MyCalculator.UI
 
         private void InputFileButton_Click(object sender, EventArgs e)
         {
-            InputFileDialog.Filter = "XML files (*.xml)";
             if (InputFileDialog.ShowDialog() == DialogResult.OK)
             {
-                InputFileLabel.Text=InputFileDialog.FileName;
+                InputFileNameLabel.Text=InputFileDialog.FileName;
             }
         }
 
         private void OutputFileButton_Click(object sender, EventArgs e)
         {
-            OutputFileDialog.Filter = "XML files (*.xml)";
             if (OutputFileDialog.ShowDialog() == DialogResult.OK)
             {
-                InputFileLabel.Text = OutputFileDialog.FileName;
+                OutputFileNameLabel.Text = OutputFileDialog.FileName;
             }
         }
 
@@ -54,8 +56,32 @@ namespace MyCalculator.UI
             }
             else
             {
-                MessageLabel.Text = "Calculated";
-                MessageLabel.ForeColor=Color.Black;
+                try
+                {
+                    var tokenizer = new XmlTokenizer(InputFileNameLabel.Text, OutputFileNameLabel.Text);
+                    var expression = tokenizer.ImportXmlFile();
+                    var validator = new TokenValidator();
+                    var calculator = new PostfixCalculator(validator, new Calculator(), new TextTokenizer(validator),
+                        new PostfixConverter(validator));
+                    List<string> steps;
+                    var result = calculator.CalculateFromPostfix(expression, out steps, false);
+                    tokenizer.BeginXmlFile(string.Join(' ',calculator.FromPostfixToInfix(expression)));
+                    tokenizer.WriteStepXmlFile(expression);
+                    foreach (var step in steps)
+                    {
+                        tokenizer.WriteStepXmlFile(step.Split(',').ToList());
+                    }
+                    tokenizer.WriteStepXmlFile(new List<string>(){result.ConvertToString()});
+                    tokenizer.EndXmlFile();
+                    Console.WriteLine();
+                    MessageLabel.Text = "Calculated";
+                    MessageLabel.ForeColor = Color.Black;
+                }
+                catch (Exception exception)
+                {
+                    MessageLabel.Text = exception.Message;
+                    MessageLabel.ForeColor = Color.Red;
+                }
             }
         }
     }

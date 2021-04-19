@@ -6,9 +6,8 @@ namespace MyCalculator.Parsers
 {
     public interface ICalculator
     {
-        public bool IsSquareNumber(int[] number);
         public bool IsZero(int[] number);
-        public bool IsDivisible(int[] firstNumber, int[] secondNumber);
+        public bool IsMultipleZero(int[] number);
         public int[] AddNumbers(int[] firstNumber, int[] secondNumber);
         public int[] SubtractNumbers(int[] firstNumber, int[] secondNumber);
         public int[] MultiplyNumbers(int[] firstNumber, int[] secondNumber);
