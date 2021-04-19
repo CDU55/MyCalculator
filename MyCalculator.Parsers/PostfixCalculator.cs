@@ -12,6 +12,8 @@ namespace MyCalculator.Parsers
         private readonly ICalculator _calculator;
         private readonly ITokenizer _tokenizer;
         private readonly IPostfixConverter _converter;
+        // default value
+        private static int maxArraySize = 1000000000;
 
         public PostfixCalculator(ITokenValidator validator,ICalculator calculator,ITokenizer tokenizer,IPostfixConverter converter)
         {
@@ -21,24 +23,45 @@ namespace MyCalculator.Parsers
             _converter = converter;
         }
 
-        public int[] Calculate(string expression,out List<string> steps)
+        public int[] Calculate(string expression,out List<string> steps, int maxArray)
         {
             var tokens = _tokenizer.Tokenize(expression);
             var postfix = _converter.ConvertToPostfix(tokens);
+            maxArraySize = maxArray;
             var result = CalculateFromPostfix(postfix,out steps);
             return result;
         }
-        public int[] CalculateFromPostfix(List<string> postfix,out List<string> steps,bool convertSteps=true)
+
+        public static void SetMaxArraySize(String maxArray)
+        {
+            try
+            {
+                maxArraySize = Convert.ToInt32(maxArray);
+            } catch (Exception)
+            {
+                throw new InvalidNumberSizeException("Invalid number size.");
+            }
+        }
+
+        public int[] CalculateFromPostfix(List<string> postfix, out List<string> steps, bool convertSteps = true)
         {
             Stack<int[]> result = new Stack<int[]>();
             steps = new List<string>();
-            for (int tokenIndex=0;tokenIndex<postfix.Count;tokenIndex++)
+
+            for (int tokenIndex = 0; tokenIndex < postfix.Count; tokenIndex++)
             {
                 var token = postfix[tokenIndex];
                 
                 if (_validator.IsNumber(token))
                 {
-                    result.Push(token.ConvertToArrayNumber());
+                    int[] temp = token.ConvertToArrayNumber();
+                    if (_calculator.ValidArraySize(temp, maxArraySize))
+                    {
+                        result.Push(temp);
+                    }
+                    else {
+                        throw new InvalidNumberSizeException("Invalid number size.");
+                    }
                 }
 
                 else if (token == "#")
@@ -70,18 +93,38 @@ namespace MyCalculator.Parsers
                     {
                         case '+':
                             operationResult = _calculator.AddNumbers(firstNumber, secondNumber);
-                            break;
+                            if (!_calculator.ValidArraySize(operationResult, maxArraySize))
+                            {
+                                throw new InvalidNumberSizeException("Invalid number size resulted from sum.");
+                            }
+                               break;
                         case '-':
+                            if (_calculator.Smaller(firstNumber, secondNumber))
+                            {
+                                throw new NegativeSubtractionResultException("Negative result from substraction.");
+                            }
                             operationResult = _calculator.SubtractNumbers(firstNumber, secondNumber);
                             break;
                         case '*':
                             operationResult = _calculator.MultiplyNumbers(firstNumber, secondNumber);
+                            if (!_calculator.ValidArraySize(operationResult, maxArraySize))
+                            {
+                                throw new InvalidNumberSizeException("Invalid number size resulted from multiplication.");
+                            }
                             break;
                         case '/':
+                            if (_calculator.IsZero(secondNumber) || _calculator.IsMultipleZero(secondNumber))
+                            {
+                                throw new DivideByZeroException("Tried to divide a number by zero");
+                            }
                             operationResult = _calculator.DivideNumbers(firstNumber, secondNumber);
                             break;
                         case '^':
                             operationResult = _calculator.RaiseToPower(firstNumber, secondNumber);
+                            if (!_calculator.ValidArraySize(operationResult, maxArraySize))
+                            {
+                                throw new InvalidNumberSizeException("Invalid number size resulted from raise to power.");
+                            }
                             break;
                         default:
                             operationResult = new int[] { -1 };
@@ -109,10 +152,11 @@ namespace MyCalculator.Parsers
 
             return result.Pop();
         }
+
         public string FromPostfixToInfix(List<string> str)
         {
+            Stack<String> stack = new Stack<string>(str.Count);
             var tokenValidator = new TokenValidator();
-            var stack = new Stack<string>(str.Count);
 
             for (int j = 0; j < str.Count; j++)
             {
@@ -131,7 +175,9 @@ namespace MyCalculator.Parsers
                     string operator2 = stack.Pop();
                     stack.Push("(" + operator2 + str[j] + operator1 + ")");
                 }
+      
             }
+
             return stack.Pop();
         }
     }

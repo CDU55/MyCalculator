@@ -18,5 +18,6 @@ namespace MyCalculator.Parsers
         public bool Greater(int[] firstNumber, int[] secondNumber, bool reversed = true);
         public bool Equal(int[] firstNumber, int[] secondNumber);
         public bool Smaller(int[] firstNumber, int[] secondNumber, bool reversed = true);
+        public bool ValidArraySize(int[] number, int maxArraySize);
     }
 }

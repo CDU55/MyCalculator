@@ -8,6 +8,7 @@ namespace MyCalculator.Parsers
 {
     public class Calculator : ICalculator
     {
+
         public int[] SubtractNumbers(int[] firstNumber, int[] secondNumber)
         {
             int maxLen = firstNumber.Length;
@@ -421,6 +422,11 @@ namespace MyCalculator.Parsers
                 }
             }
             return result;
+        }
+
+        public bool ValidArraySize(int[] number, int maxArraySize)
+        {
+            return number.Length <= maxArraySize;
         }
     }
 }

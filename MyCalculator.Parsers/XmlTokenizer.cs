@@ -8,6 +8,7 @@ namespace MyCalculator.Parsers
 {
     public class XmlTokenizer : ITokenizer
     {
+
         public List<string> Tokenize(string input)
         {
             throw new NotImplementedException();
@@ -146,7 +147,11 @@ namespace MyCalculator.Parsers
                         ;
                         operators.Push(operatorsDict[newLine]);
                     }
-                    else
+                else if (newLine.StartsWith("maxSize") && newLine.EndsWith("/maxSize"))
+                {
+                    PostfixCalculator.SetMaxArraySize(newLine.Replace("maxSize", "").Replace("/", ""));   
+                }
+                else
                     {
                         if (newLine.StartsWith("number") && newLine.EndsWith("/number"))
                         {

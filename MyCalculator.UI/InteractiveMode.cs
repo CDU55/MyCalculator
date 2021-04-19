@@ -30,8 +30,9 @@ namespace MyCalculator.UI
             var expression = ExpressionInput.Text;
             try
             {
+                int arraySize = (int) MaxNumberSizeInput.Value;
                 List<string> steps;
-                var result = _calculator.Calculate(expression,out steps);
+                var result = _calculator.Calculate(expression,out steps, arraySize);
                 OutputBox.Text = "";
                 foreach (var step in steps)
                 {
