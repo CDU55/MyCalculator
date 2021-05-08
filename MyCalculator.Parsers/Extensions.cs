@@ -26,9 +26,9 @@ namespace MyCalculator.Parsers
 
         public static int[] ConvertToArrayNumber(this string number)
         {
-            int[] numberArray = new int[number.Length];
-            int arrayDigitIndex = 0;
-            for (int digitIndex=number.Length-1;digitIndex>=0;digitIndex--)
+            var numberArray = new int[number.Length];
+            var arrayDigitIndex = 0;
+            for (var digitIndex=number.Length-1;digitIndex>=0;digitIndex--)
             {
                 numberArray[arrayDigitIndex++] = number[digitIndex]-'0';
             }

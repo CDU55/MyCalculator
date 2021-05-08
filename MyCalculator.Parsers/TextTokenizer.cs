@@ -41,7 +41,12 @@ namespace MyCalculator.Parsers
                     currentNumber += character.ToString();
                 }
             }
-            output.Add(currentNumber);
+
+            //Bug found here, no empty string check before adding
+            if (!string.IsNullOrEmpty(currentNumber))
+            {
+                output.Add(currentNumber);
+            }
 
             return output;
         }

@@ -14,7 +14,6 @@ namespace MyCalculator.Parsers
         public int[] DivideNumbers(int[] firstNumber, int[] secondNumber);
         public int[] RaiseToPower(int[] firstNumber, int[] secondNumber);
         public int[] SquareRoot(int[] fistNumber);
-
         public bool Greater(int[] firstNumber, int[] secondNumber, bool reversed = true);
         public bool Equal(int[] firstNumber, int[] secondNumber);
         public bool Smaller(int[] firstNumber, int[] secondNumber, bool reversed = true);

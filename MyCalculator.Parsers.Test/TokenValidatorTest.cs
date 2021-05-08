@@ -17,6 +17,8 @@ namespace MyCalculator.Parsers.Test
             _validator = new TokenValidator();
         }
 
+        [TestCase(null)]
+        [TestCase("")]
         [TestCase("\\")]
         [TestCase("&")]
         [TestCase(",")]
@@ -52,6 +54,9 @@ namespace MyCalculator.Parsers.Test
             var validationResult = _validator.IsValid(token);
             Assert.IsTrue(validationResult);
         }
+
+        [TestCase(null)]
+        [TestCase("")]
         [TestCase("\\")]
         [TestCase("&")]
         [TestCase(",")]
@@ -77,6 +82,8 @@ namespace MyCalculator.Parsers.Test
             Assert.IsFalse(validationResult);
         }
 
+
+
         [TestCase("+")]
         [TestCase("-")]
         [TestCase("/")]
@@ -89,6 +96,9 @@ namespace MyCalculator.Parsers.Test
             Assert.IsTrue(validationResult);
         }
 
+
+        [TestCase(null)]
+        [TestCase("")]
         [TestCase("*")]
         [TestCase("&")]
         [TestCase(",")]
@@ -124,6 +134,82 @@ namespace MyCalculator.Parsers.Test
             Assert.IsTrue(validationResult);
         }
 
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("*")]
+        [TestCase("&")]
+        [TestCase(",")]
+        [TestCase(".")]
+        [TestCase("?")]
+        [TestCase("*")]
+        [TestCase("&")]
+        [TestCase(",")]
+        [TestCase(".")]
+        [TestCase("?")]
+        [TestCase("1")]
+        [TestCase("2")]
+        [TestCase("3")]
+        [TestCase("4")]
+        [TestCase("5")]
+        [TestCase("6")]
+        [TestCase("7")]
+        [TestCase("8")]
+        [TestCase("9")]
+        [TestCase("0")]
+        [TestCase(" ")]
+        [TestCase("(")]
+        public void ShouldIdentifyInvalidRightParenthesis(string token)
+        {
+            var validationResult = _validator.IsRightParenthesis(token);
+            Assert.IsFalse(validationResult);
+        }
+
+        [TestCase(")")]
+        public void ShouldIdentifyValidRightParenthesis(string token)
+        {
+            var validationResult = _validator.IsRightParenthesis(token);
+            Assert.IsTrue(validationResult);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("*")]
+        [TestCase("&")]
+        [TestCase(",")]
+        [TestCase(".")]
+        [TestCase("?")]
+        [TestCase("*")]
+        [TestCase("&")]
+        [TestCase(",")]
+        [TestCase(".")]
+        [TestCase("?")]
+        [TestCase("1")]
+        [TestCase("2")]
+        [TestCase("3")]
+        [TestCase("4")]
+        [TestCase("5")]
+        [TestCase("6")]
+        [TestCase("7")]
+        [TestCase("8")]
+        [TestCase("9")]
+        [TestCase("0")]
+        [TestCase(" ")]
+        [TestCase(")")]
+        public void ShouldIdentifyInvalidLeftParenthesis(string token)
+        {
+            var validationResult = _validator.IsLeftParenthesis(token);
+            Assert.IsFalse(validationResult);
+        }
+
+        [TestCase("(")]
+        public void ShouldIdentifyValidLeftParenthesis(string token)
+        {
+            var validationResult = _validator.IsLeftParenthesis(token);
+            Assert.IsTrue(validationResult);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
         [TestCase("-1")]
         [TestCase("2.5")]
         [TestCase("3,6")]
@@ -167,6 +253,8 @@ namespace MyCalculator.Parsers.Test
             Assert.IsTrue(validationResult);
         }
 
+        [TestCase(null)]
+        [TestCase("")]
         [TestCase("*")]
         [TestCase("&")]
         [TestCase(",")]

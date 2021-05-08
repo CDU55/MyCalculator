@@ -13,12 +13,14 @@ namespace MyCalculator.Parsers
         {
             _validator = validator;
         }
+
         public List<string> ConvertToPostfix(List<string> tokens)
         {
             int i = 0;
             List<string> postfix = new List<string>();
             Queue<string> output = new Queue<string>();
             Stack<string> operators = new Stack<string>();
+
             while (i < tokens.Count)
             {
                 if (_validator.IsNumber(tokens[i]))
@@ -27,79 +29,104 @@ namespace MyCalculator.Parsers
                 }
                 else if (_validator.IsOperator(tokens[i]))
                 {
-                    while (((operators.Count!=0 && GetPrecedence(operators.Peek()) > GetPrecedence(tokens[i])
-                            || (operators.Count!=0 && tokens[i] == operators.Peek() && tokens[i] != "#"))
-                           && operators.Peek() != "("))
+                    //Bug here, the conditions were not properly checked ( left associative operators with equal precedence )
+                    while (operators.Count != 0 && operators.Peek() != "(" &&
+                           ((GetPrecedence(operators.Peek()) > GetPrecedence(tokens[i]))
+                            || (operators.Count != 0 &&
+                                GetPrecedence(tokens[i]) == GetPrecedence(operators.Peek()) &&
+                                IsLeftAssociative(tokens[i]))))
                     {
                         output.Enqueue(operators.Pop());
                     }
+
                     operators.Push(tokens[i]);
-
                 }
-
                 else if (tokens[i] == "(")
                 {
                     operators.Push(tokens[i]);
-
                 }
-
                 else if (tokens[i] == ")")
                 {
+                    //Bug here, no initial check for empty stack
+                    if (operators.Count == 0)
+                    {
+                        throw new UnpairedParenthesisException("There is a parenthesis without pair");
+                    }
 
                     while (operators.Peek() != "(")
                     {
-                        if (operators.Count==0)
+                        output.Enqueue(operators.Pop());
+                        if (operators.Count == 0)
                         {
                             throw new UnpairedParenthesisException("There is a parenthesis without pair");
                         }
-                        output.Enqueue(operators.Pop());
                     }
+
                     operators.Pop();
                 }
+
                 i++;
             }
 
             if (i == tokens.Count)
             {
-                while (operators.Count!=0)
+                while (operators.Count != 0)
                 {
+                    //Check for left parenthesis not necessary
                     if (operators.Peek() == ")" || operators.Peek() == "(")
                     {
                         throw new UnpairedParenthesisException("There is a parenthesis without pair");
                     }
+
                     output.Enqueue(operators.Pop());
-
                 }
-
             }
 
-            while (output.Count!=0)
+            while (output.Count != 0)
             {
                 postfix.Add(output.Peek());
                 output.Dequeue();
-
             }
 
             return postfix;
-		}
+        }
 
         public int GetPrecedence(string operatorString)
         {
-            if (operatorString == "+" || operatorString == "-")
+            if (!_validator.IsOperator(operatorString))
             {
-                return 1;
-            }
-            if(operatorString=="*" || operatorString=="/")
-            {
-                return 2;
+                throw new InvalidOperatorException($"{operatorString} is not an operator");
             }
 
-            if (operatorString == "^" || operatorString == "#")
+            switch (operatorString)
             {
-                return 3;
+                case "+":
+                case "-":
+                    return 1;
+                case "*":
+                case "/":
+                    return 2;
+                case "^":
+                case "#":
+                    return 3;
+                default:
+                    return -1;
+            }
+        }
+
+        public bool IsLeftAssociative(string operatorString)
+        {
+            if (!_validator.IsOperator(operatorString))
+            {
+                throw new InvalidOperatorException($"{operatorString} is not an operator");
             }
 
-            return -1;
+            if (operatorString == "+" || operatorString == "-" || operatorString == "*" || operatorString == "/")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

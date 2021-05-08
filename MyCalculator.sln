@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCalculator.Parsers", "MyC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCalculator.Parsers.Test", "MyCalculator.Parsers.Test\MyCalculator.Parsers.Test.csproj", "{1DB90740-8827-4749-A89F-03D66448C1B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEnv", "TestEnv\TestEnv.csproj", "{E66BE2A6-F16C-44F9-9F2C-DFBC96659BAB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCalculator.UI", "MyCalculator.UI\MyCalculator.UI.csproj", "{B7E8FEA4-5179-4443-9887-EFADFB795309}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCalculator.UI", "MyCalculator.UI\MyCalculator.UI.csproj", "{B7E8FEA4-5179-4443-9887-EFADFB795309}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{1DB90740-8827-4749-A89F-03D66448C1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DB90740-8827-4749-A89F-03D66448C1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DB90740-8827-4749-A89F-03D66448C1B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E66BE2A6-F16C-44F9-9F2C-DFBC96659BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E66BE2A6-F16C-44F9-9F2C-DFBC96659BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E66BE2A6-F16C-44F9-9F2C-DFBC96659BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E66BE2A6-F16C-44F9-9F2C-DFBC96659BAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7E8FEA4-5179-4443-9887-EFADFB795309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7E8FEA4-5179-4443-9887-EFADFB795309}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E8FEA4-5179-4443-9887-EFADFB795309}.Release|Any CPU.ActiveCfg = Release|Any CPU

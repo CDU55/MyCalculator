@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MyCalculator.Parsers.Exceptions
 {
-    public class NegativeSubtractionResultException : Exception
+    public class InvalidOperatorException : Exception
     {
-        public NegativeSubtractionResultException(string message) : base(message)
+        public InvalidOperatorException(string message) : base(message)
         {
 
         }

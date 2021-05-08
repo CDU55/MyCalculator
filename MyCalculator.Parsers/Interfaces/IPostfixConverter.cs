@@ -7,5 +7,8 @@ namespace MyCalculator.Parsers
     public interface IPostfixConverter
     {
         List<string> ConvertToPostfix(List<string> tokens);
+        int GetPrecedence(string operatorString);
+        bool IsLeftAssociative(string operatorString);
+
     }
 }

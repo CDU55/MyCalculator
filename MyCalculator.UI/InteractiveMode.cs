@@ -44,7 +44,7 @@ namespace MyCalculator.UI
             }
             catch (Exception exception)
             {
-                OutputBox.Text = exception.ToString();
+                OutputBox.Text = exception.Message;
                 OutputBox.ForeColor = Color.Red;
             }
         }
