@@ -400,7 +400,7 @@ namespace MyCalculator.Parsers
         }
 
 
-        private int[] FormatResultArray(int[] result)
+        public int[] FormatResultArray(int[] result)
         {
             // if the number is zero return an array with only a digit
             if (IsMultipleZero(result))
