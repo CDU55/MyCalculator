@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using MyCalculator.Parsers.Interfaces;
 
 namespace MyCalculator.Parsers
 {
-    public class XmlTokenizer : ITokenizer
+    public class XmlTokenizer : IXmlTokenizer
     {
-        public List<string> Tokenize(string input)
+        public string _exportPath { get; set; }
+        public string _importPath { get; set; }
+
+        public XmlTokenizer()
         {
-            throw new NotImplementedException();
-        }
 
-        public XmlTokenizer(string inputPath, string outputPath)
+        }
+        public XmlTokenizer(string inputFile, string outputFile)
         {
-            _importPath = inputPath;
-            _exportPath = outputPath;
+            _importPath = inputFile;
+            _exportPath = outputFile;
         }
-
-        static string _exportPath;
-        static string _importPath;
-
         public void WriteStepXmlFile(List<String> stepList)
         {
             List<string> operators = new List<string>() {"+", "-", "/", "*", "pow", "sqrt"};

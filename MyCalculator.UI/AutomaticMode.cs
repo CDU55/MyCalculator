@@ -13,12 +13,18 @@ namespace MyCalculator.UI
 {
     public partial class AutomaticMode : Form
     {
+        private readonly XmlCalculator _calculator;
+
         public AutomaticMode()
         {
             InitializeComponent();
             InputFileNameLabel.Text = "";
             OutputFileNameLabel.Text = "";
             MessageLabel.Text = "";
+            var validator = new TokenValidator();
+            _calculator = new XmlCalculator(new XmlTokenizer(), new PostfixCalculator(new TokenValidator(),
+                new Calculator(), new TextTokenizer(validator),
+                new PostfixConverter(validator)));
 
         }
         private void BackButton_Click(object sender, EventArgs e)
@@ -58,23 +64,8 @@ namespace MyCalculator.UI
             {
                 try
                 {
-                    var tokenizer = new XmlTokenizer(InputFileNameLabel.Text, OutputFileNameLabel.Text);
-                    var expression = tokenizer.ImportXmlFile();
-                    var validator = new TokenValidator();
-                    var calculator = new PostfixCalculator(validator, new Calculator(), new TextTokenizer(validator),
-                        new PostfixConverter(validator));
-                    List<string> steps;
-                    var result = calculator.CalculateFromPostfix(expression, out steps, false);
-                    tokenizer.BeginXmlFile(string.Join(' ',calculator.FromPostfixToInfix(expression)));
-                    tokenizer.WriteStepXmlFile(expression);
-                    foreach (var step in steps)
-                    {
-                        tokenizer.WriteStepXmlFile(step.Split(',').ToList());
-                    }
-                    tokenizer.WriteStepXmlFile(new List<string>(){result.ConvertToString()});
-                    tokenizer.EndXmlFile();
-                    Console.WriteLine();
-                    MessageLabel.Text = "Calculated";
+                    _calculator.Calculate(InputFileNameLabel.Text, OutputFileNameLabel.Text);
+                    MessageLabel.Text = @"Calculated";
                     MessageLabel.ForeColor = Color.Black;
                 }
                 catch (Exception exception)

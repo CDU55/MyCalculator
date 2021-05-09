@@ -30,6 +30,10 @@ namespace MyCalculator.Parsers
         {
             var tokens = _tokenizer.Tokenize(expression);
             var postfix = _converter.ConvertToPostfix(tokens);
+            if (maxArray <= 0)
+            {
+                throw new InvalidNumberSizeException("Invalid number size.");
+            }
             maxArraySize = maxArray;
             var result = CalculateFromPostfix(postfix, out steps);
             return result;
@@ -39,12 +43,22 @@ namespace MyCalculator.Parsers
         {
             try
             {
-                maxArraySize = Convert.ToInt32(maxArray);
+                var size= Convert.ToInt32(maxArray);
+                if (size <= 0)
+                {
+                    throw new InvalidNumberSizeException("Invalid number size.");
+                }
+                maxArraySize = size;
             }
             catch (Exception)
             {
                 throw new InvalidNumberSizeException("Invalid number size.");
             }
+        }
+
+        public static int GetMaxArraySize()
+        {
+            return maxArraySize;
         }
 
         public int[] CalculateFromPostfix(List<string> postfix, out List<string> steps, bool convertSteps = true)
@@ -73,7 +87,7 @@ namespace MyCalculator.Parsers
                 {
                     if (result.Count < 1)
                     {
-                        throw new InvalidTokenException("Invalid expression");
+                        throw new InvalidExpressionException("Invalid expression");
                     }
 
                     int[] currentToken = result.Pop();
@@ -90,7 +104,7 @@ namespace MyCalculator.Parsers
                 {
                     if (result.Count < 2)
                     {
-                        throw new InvalidTokenException("Invalid expression");
+                        throw new InvalidExpressionException("Invalid expression");
                     }
 
                     int[] secondNumber = result.Pop();
@@ -131,37 +145,25 @@ namespace MyCalculator.Parsers
 
                             operationResult = _calculator.DivideNumbers(firstNumber, secondNumber);
                             break;
-                        case '^':
+                        default:
                             operationResult = _calculator.RaiseToPower(firstNumber, secondNumber);
                             if (!_calculator.ValidArraySize(operationResult, maxArraySize))
                             {
                                 throw new InvalidNumberSizeException(
                                     "Invalid number size resulted from raise to power.");
                             }
-
-                            break;
-                        default:
-                            operationResult = new int[] {-1};
                             break;
                     }
 
                     result.Push(operationResult);
                 }
 
-                if (_validator.IsOperator(token) && tokenIndex < postfix.Count - 1)
+                if (_validator.IsOperator(token) && tokenIndex < postfix.Count - 1 && convertSteps)
                 {
                     var postfixToSolve = postfix.GetRange(tokenIndex + 1, postfix.Count - tokenIndex - 1);
                     postfixToSolve.InsertRange(0, result.Select(r => r.ConvertToString()));
                     var currentStep = "";
-                    if (convertSteps)
-                    {
-                        currentStep = FromPostfixToInfix(postfixToSolve);
-                    }
-                    else
-                    {
-                        currentStep = string.Join(',', postfixToSolve);
-                    }
-
+                    currentStep = FromPostfixToInfix(postfixToSolve);
                     steps.Add(currentStep);
                 }
             }
@@ -173,27 +175,42 @@ namespace MyCalculator.Parsers
         {
             var stack = new Stack<string>(postfix.Count);
             var tokenValidator = new TokenValidator();
-
-            foreach (var token in postfix)
+            try
             {
-                if (!tokenValidator.IsOperator(token))
+                foreach (var token in postfix)
                 {
-                    stack.Push(token);
+                    if (!tokenValidator.IsOperator(token))
+                    {
+                        stack.Push(token);
+                    }
+                    else if (token == "#")
+                    {
+                        string operator1 = stack.Pop();
+                        stack.Push("(" + token + operator1 + ")");
+                    }
+                    else
+                    {
+                        string operator1 = stack.Pop();
+                        string operator2 = stack.Pop();
+                        stack.Push("(" + operator2 + token + operator1 + ")");
+                    }
                 }
-                else if (token == "#")
-                {
-                    string operator1 = stack.Pop();
-                    stack.Push("(" + token + operator1 + ")");
-                }
-                else
-                {
-                    string operator1 = stack.Pop();
-                    string operator2 = stack.Pop();
-                    stack.Push("(" + operator2 + token + operator1 + ")");
-                }
-            }
 
-            return stack.Pop();
+                if (stack.Count != 1)
+                {
+                    throw new InvalidExpressionException("Invalid postfix notation");
+                }
+
+                return stack.Pop();
+            }
+            catch (InvalidExpressionException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidExpressionException($"Postfix notation invalid : {e.Message}");
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MyCalculator.Parsers.Exceptions;
 using NUnit.Framework;
 
 namespace MyCalculator.Parsers.Test
@@ -22,6 +23,20 @@ namespace MyCalculator.Parsers.Test
         {
             var actual = input.ConvertToArrayNumber();
             CollectionAssert.AreEqual(expected,actual);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(ExtensionsTestInputs), nameof(ExtensionsTestInputs.ArrayToStringInputsException))]
+        public void ShouldThrowInvalidNumberArrayException(int[] input)
+        {
+            Assert.Throws<InvalidNumberArrayException>(() => input.ConvertToString());
+        }
+
+        [Test]
+        [TestCaseSource(typeof(ExtensionsTestInputs), nameof(ExtensionsTestInputs.StringToArrayInputsExceptions))]
+        public void ShouldThrowInvalidNumberStringException(string input)
+        {
+            Assert.Throws<InvalidNumberStringException>(() => input.ConvertToArrayNumber());
         }
 
     }

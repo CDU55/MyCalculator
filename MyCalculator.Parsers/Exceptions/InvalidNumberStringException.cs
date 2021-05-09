@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MyCalculator.Parsers.Exceptions
 {
-    public class InvalidNumberArrayException : Exception
+    public class InvalidNumberStringException : Exception
     {
-        public InvalidNumberArrayException(string message) : base(message)
+        public InvalidNumberStringException(string message):base(message)
         {
 
         }
