@@ -459,5 +459,42 @@ namespace MyCalculator.Parsers.Test
 
         }
 
+        [Test]
+        [TestCaseSource(typeof(PostfixCalculatorTestInputs), nameof(PostfixCalculatorTestInputs.CalculateInputsSteps))]
+        public void ShouldWriteOutputTestParameter(string expression, List<string> tokens, List<string> postfix,
+            int[] expected1,int[] expected2,List<string> expectedSteps)
+        {
+            var actualSteps = new List<string>();
+            _tokenizerMock.Setup(x => x.Tokenize(expression)).Returns(tokens);
+            _postfixConverterMock.Setup(x => x.ConvertToPostfix(tokens)).Returns(postfix);
+            _calculatorMock.Setup(x => x.Smaller(It.IsAny<int[]>(), It.IsAny<int[]>(), It.IsAny<bool>())).Returns(false);
+            _calculatorMock.Setup(x => x.IsZero(It.IsAny<int[]>())).Returns(false);
+            _calculatorMock.Setup(x => x.IsMultipleZero(It.IsAny<int[]>())).Returns(false);
+            _calculatorMock.Setup(x => x.ValidArraySize(It.IsAny<int[]>(), It.IsAny<int>())).Returns(true);
+
+            _calculatorMock.SetupSequence(x => x.AddNumbers(It.IsAny<int[]>(), It.IsAny<int[]>()))
+                .Returns(expected1)
+                .Returns(expected2);
+            _calculatorMock.SetupSequence(x => x.SubtractNumbers(It.IsAny<int[]>(), It.IsAny<int[]>()))
+                .Returns(expected1)
+                .Returns(expected2);
+            _calculatorMock.SetupSequence(x => x.MultiplyNumbers(It.IsAny<int[]>(), It.IsAny<int[]>()))
+                .Returns(expected1)
+                .Returns(expected2); ;
+            _calculatorMock.SetupSequence(x => x.DivideNumbers(It.IsAny<int[]>(), It.IsAny<int[]>()))
+                .Returns(expected1)
+                .Returns(expected2);
+            _calculatorMock.SetupSequence(x => x.RaiseToPower(It.IsAny<int[]>(), It.IsAny<int[]>()))
+                .Returns(expected1)
+                .Returns(expected2); ;
+            _calculatorMock.SetupSequence(x => x.SquareRoot(It.IsAny<int[]>()))
+                .Returns(expected1)
+                .Returns(expected2); ;
+            var actual = _postfixCalculator.Calculate(expression, out actualSteps, 100000);
+            _tokenizerMock.Verify(x => x.Tokenize(expression), Times.Once);
+            _postfixConverterMock.Verify(x => x.ConvertToPostfix(tokens), Times.Once);
+            CollectionAssert.AreEqual(expectedSteps,actualSteps);
+        }
+
     }
 }

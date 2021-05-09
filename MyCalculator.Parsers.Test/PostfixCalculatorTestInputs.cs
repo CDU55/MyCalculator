@@ -39,7 +39,23 @@ namespace MyCalculator.Parsers.Test
             new object[] {"#9",new List<string> {"#","9"},new List<string>{"9","#"},new[]{3},new[]{0,0,0,0,0,1}},
             new object[] {"3 * 3",new List<string> {"3","*","3"},new List<string>{"3","3","*"},new[]{9},new[]{0,0,1,0,0,0}},
             new object[] {"3 * 3",new List<string> {"3","*","3"},new List<string>{"3","3","*"},new[]{-1,9},new[]{0,0,1,0,0,0}},
+        };
 
+        public static object[] CalculateInputsSteps = {
+            new object[] {"2 + 3 + 4",new List<string> {"2","+","3","+","4"},new List<string>{"2","3","+","4","+"}
+                ,new[]{5},new[]{9},new List<string>{"(5+4)"}},
+
+            new object[] {"2 + 3 * 9",new List<string> {"2","+","3","*","9"},new List<string>{"2","3","+","9","*"}
+            ,new[]{6},new[]{3,6},new List<string>{"(6*9)"}},
+
+            new object[] {"2 + 3 ^ 4",new List<string> {"2","+","3","^","4"},new List<string>{"2","3","+","4","^"}
+                ,new[]{5},new[]{5,2,6},new List<string>{"(5^4)"}},
+
+            new object[] {"2 + 3 / 5",new List<string> {"2","+","3","/","5"},new List<string>{"2","3","+","5","/"}
+                ,new[]{5},new[]{1},new List<string>{"(5/5)"}},
+
+            new object[] {"#(6 + 3)",new List<string> {"#","(","6","+","3",")"},new List<string>{"6","3","+","#"}
+                ,new[]{9},new[]{3},new List<string>{"(#9)"}}
         };
     }
 }
