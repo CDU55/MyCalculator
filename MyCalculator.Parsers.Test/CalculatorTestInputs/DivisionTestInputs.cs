@@ -21,7 +21,8 @@ namespace MyCalculator.Parsers.Test.CalculatorTestInputs
 
 
         public static object[] NotDivisibleNumbers = {
-            new object[] { new int[2] { 0, 1 } , new int[1] { 7 } }
+            new object[] { new int[2] { 0, 1 } , new int[1] { 7 } },
+            new object[] { new int[4] { 0,0,0,1 } , new int[5] { 0,0,0,0,7 } }
         };
     }
 }
