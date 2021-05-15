@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 using MyCalculator.Parsers.Exceptions;
 
@@ -15,10 +16,16 @@ namespace MyCalculator.Parsers
         }
         public List<string> Tokenize(string input)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(input),"Null parameter to tokenize");
             List<string> output = new List<string>();
+            Contract.Ensures(output.Count <= input.Length);
+            Contract.Ensures(Contract.ForAll(output,
+                (string token) => _validator.IsNumber(token) || _validator.IsOperator(token) ||
+                                  _validator.IsParenthesis(token)));
             string currentNumber = "";
             foreach (var character in input)
             {
+                Contract.Assert(output.Count<input.Length);
                 if(!_validator.IsValid(character.ToString()))
                 {
                     throw new InvalidTokenException($"{character} is not a valid character");

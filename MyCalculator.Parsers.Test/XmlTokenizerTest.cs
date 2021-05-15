@@ -72,7 +72,7 @@ namespace MyCalculator.Parsers.Test
             List<string> expectedOutput = new List<string>();
             string line;
 
-            System.IO.StreamReader file = new System.IO.StreamReader(expectedImport);
+            StreamReader file = new StreamReader(expectedImport);
             while ((line = file.ReadLine()) != null)
             {
                 System.Console.WriteLine(line);

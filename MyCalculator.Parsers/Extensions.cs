@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 using MyCalculator.Parsers.Exceptions;
 
@@ -9,7 +10,10 @@ namespace MyCalculator.Parsers
     {
         public static string ConvertToString(this int[] number)
         {
+            Contract.Requires(number!=null && number.Length>0);
             string numberString = "";
+            Contract.Ensures(Contract.ForAll(0, numberString.Length, index => numberString[index] == (number[numberString.Length - index - 1] - '0')));
+            Contract.Ensures((numberString.Length == number.Length) || (numberString.Length < number.Length) && number[numberString.Length] == -1);
             foreach (var digit in number)
             {
                 if (digit > 9)
@@ -36,6 +40,8 @@ namespace MyCalculator.Parsers
 
         public static int[] ConvertToArrayNumber(this string number)
         {
+            Contract.Requires(!string.IsNullOrEmpty(number));
+
             var numberArray = new int[number.Length];
             var arrayDigitIndex = 0;
             for (var digitIndex=number.Length-1;digitIndex>=0;digitIndex--)
@@ -46,6 +52,9 @@ namespace MyCalculator.Parsers
                 }
                 numberArray[arrayDigitIndex++] = number[digitIndex]-'0';
             }
+
+            Contract.Ensures(Contract.ForAll(0, number.Length, index => number[index] == (numberArray[number.Length - index - 1] - '0')));
+            Contract.Ensures((numberArray.Length == number.Length));
             return numberArray;
         }
     }

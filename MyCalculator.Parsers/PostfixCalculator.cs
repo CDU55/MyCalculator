@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using MyCalculator.Parsers.Exceptions;
@@ -63,6 +64,9 @@ namespace MyCalculator.Parsers
 
         public int[] CalculateFromPostfix(List<string> postfix, out List<string> steps, bool convertSteps = true)
         {
+            Contract.Requires(postfix!=null && postfix.Count>0);
+            Contract.Ensures((!convertSteps && steps !=null && steps.Count==0) 
+                             || (convertSteps && steps != null));
             Stack<int[]> result = new Stack<int[]>();
             steps = new List<string>();
 
@@ -106,8 +110,9 @@ namespace MyCalculator.Parsers
                     {
                         throw new InvalidExpressionException("Invalid expression");
                     }
-
+                    Contract.Assert(result.Count>0);
                     int[] secondNumber = result.Pop();
+                    Contract.Assert(result.Count > 0);
                     int[] firstNumber = result.Pop();
                     int[] operationResult;
                     switch (token[0])
@@ -185,12 +190,15 @@ namespace MyCalculator.Parsers
                     }
                     else if (token == "#")
                     {
+                        Contract.Assert(stack.Count>0);
                         string operator1 = stack.Pop();
                         stack.Push("(" + token + operator1 + ")");
                     }
                     else
                     {
+                        Contract.Assert(stack.Count > 0);
                         string operator1 = stack.Pop();
+                        Contract.Assert(stack.Count > 0);
                         string operator2 = stack.Pop();
                         stack.Push("(" + operator2 + token + operator1 + ")");
                     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,9 @@ namespace MyCalculator.Parsers
             {
                 if (operators.Any(step.Contains))
                 {
+                    Contract.Assert(numbers.Count > 0);
                     var secondNumber = numbers.Pop();
+                    Contract.Assert(numbers.Count > 0);
                     var firstNumber = numbers.Pop();
                     switch (step)
                     {
@@ -61,7 +64,6 @@ namespace MyCalculator.Parsers
 
             string[] tokensList = numbers.Pop().Split("@");
             int noIdentation = 1;
-
             using (StreamWriter sw = File.AppendText(_exportPath))
             {
                 sw.WriteLine("          <step>");
@@ -126,6 +128,7 @@ namespace MyCalculator.Parsers
             {
                 {"add", "+"}, {"substraction", "-"}, {"div", "/"}, {"multiply", "*"}, {"pow", "pow"}, {"sqrt", "sqrt"}
             };
+            Contract.Assert(File.Exists(_importPath));
             foreach (var line in File.ReadLines(_importPath))
             {
                 var newLine = line.Trim().Replace("<", "").Replace(">", "");
@@ -153,6 +156,7 @@ namespace MyCalculator.Parsers
 
             while (numbers.Count != 0)
             {
+                Contract.Assert(numbers.Count>0);
                 formula.Add(numbers.Pop());
             }
 
