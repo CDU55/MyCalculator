@@ -23,6 +23,7 @@ namespace MyCalculator.Parsers
 
             for (int count = 0; count < minLen; count++)
             {
+                Contract.Assert(carriage == 0 || carriage == -1);
                 if (firstNumber[count] + carriage >= secondNumber[count])
                 {
                     result[count] = firstNumber[count] - secondNumber[count] + carriage;
@@ -37,6 +38,7 @@ namespace MyCalculator.Parsers
 
             for (int countSecond = minLen; countSecond < maxLen; countSecond++)
             {
+                Contract.Assert(carriage == 0 || carriage == -1);
                 if ((firstNumber[countSecond] + carriage) >= 0)
                 {
                     result[countSecond] = firstNumber[countSecond] + carriage;
@@ -77,6 +79,7 @@ namespace MyCalculator.Parsers
             int carriage = 0;
             for (int count = 0; count < minLen; count++)
             {
+                Contract.Assert(carriage >= 0);
                 result[count] = firstNumber[count] + secondNumber[count] + carriage;
                 if (result[count] > 9)
                 {
@@ -90,6 +93,7 @@ namespace MyCalculator.Parsers
             }
             for (int countSecond = minLen; countSecond < maxLen; countSecond++)
             {
+                Contract.Assert(carriage >= 0);
                 result[countSecond] = maxNumber[countSecond] + carriage;
                 if (result[countSecond] > 9)
                 {
@@ -122,6 +126,7 @@ namespace MyCalculator.Parsers
             int carriage = 0;
             for (int countSecondNumber = 0; countSecondNumber < secondNumber.Length; countSecondNumber++)
             {
+                Contract.Assert(carriage >= 0);
                 for (int countFirstNumber = 0; countFirstNumber < firstNumber.Length; countFirstNumber++)
                 {
                     result[countFirstNumber + countSecondNumber] += secondNumber[countSecondNumber] * firstNumber[countFirstNumber] + carriage;

@@ -72,6 +72,7 @@ namespace MyCalculator.Parsers
 
             for (int tokenIndex = 0; tokenIndex < postfix.Count; tokenIndex++)
             {
+                Contract.Assert(result.Count > -1);
                 var token = postfix[tokenIndex];
 
                 if (_validator.IsNumber(token))
@@ -178,6 +179,7 @@ namespace MyCalculator.Parsers
 
         public string FromPostfixToInfix(List<string> postfix)
         {
+            Contract.Assert(postfix.Count != 0);
             var stack = new Stack<string>(postfix.Count);
             var tokenValidator = new TokenValidator();
             try

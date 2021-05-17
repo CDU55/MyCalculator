@@ -19,11 +19,13 @@ namespace MyCalculator.Parsers
         }
         public XmlTokenizer(string inputFile, string outputFile)
         {
+            Contract.Assert(inputFile != null && outputFile != null);
             _importPath = inputFile;
             _exportPath = outputFile;
         }
         public void WriteStepXmlFile(List<String> stepList)
         {
+            Contract.Assert(stepList.Count != 0);
             List<string> operators = new List<string>() {"+", "-", "/", "*", "pow", "sqrt"};
             Stack<string> numbers = new Stack<string>();
             foreach (string step in stepList)
@@ -102,6 +104,7 @@ namespace MyCalculator.Parsers
 
         public void BeginXmlFile(string formula)
         {
+            Contract.Assert(formula != null);
             File.WriteAllText(_exportPath, string.Empty);
             using var sw = File.CreateText(_exportPath);
             sw.WriteLine("<?xml version=\"1.0\" encoding=\"UTF - 8\"?>");
@@ -134,7 +137,6 @@ namespace MyCalculator.Parsers
                 var newLine = line.Trim().Replace("<", "").Replace(">", "");
                 if (operatorsDict.Keys.Contains(newLine) && !newLine.Contains("/"))
                 {
-                    ;
                     operators.Push(operatorsDict[newLine]);
                 }
                 else if (newLine.StartsWith("maxSize") && newLine.EndsWith("/maxSize"))
@@ -161,6 +163,7 @@ namespace MyCalculator.Parsers
             }
 
             formula.Reverse();
+            Contract.Assert(formula.Count != 0);
             return formula;
         }
     }
