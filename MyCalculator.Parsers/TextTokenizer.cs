@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
 using MyCalculator.Parsers.Exceptions;
@@ -16,7 +17,7 @@ namespace MyCalculator.Parsers
         }
         public List<string> Tokenize(string input)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(input),"Null parameter to tokenize");
+            Contract.Assert(!string.IsNullOrEmpty(input), "Null parameter to tokenize");
             List<string> output = new List<string>();
             Contract.Ensures(output.Count <= input.Length);
             Contract.Ensures(Contract.ForAll(output,

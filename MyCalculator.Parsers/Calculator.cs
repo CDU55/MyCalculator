@@ -13,8 +13,8 @@ namespace MyCalculator.Parsers
 
         public int[] SubtractNumbers(int[] firstNumber, int[] secondNumber)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber!=null && firstNumber.Length>0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber!=null && secondNumber.Length!=0);
+            Contract.Assert(firstNumber!=null && firstNumber.Length>0);
+            Contract.Assert(secondNumber!=null && secondNumber.Length!=0);
             Contract.Ensures(OperationsVerifier.CheckSubtraction(firstNumber,secondNumber,Contract.Result<int[]>()));
             int maxLen = firstNumber.Length;
             int minLen = secondNumber.Length;
@@ -54,8 +54,8 @@ namespace MyCalculator.Parsers
 
         public int[] AddNumbers(int[] firstNumber, int[] secondNumber)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length > 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length > 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures(OperationsVerifier.CheckAdd(firstNumber, secondNumber, Contract.Result<int[]>()));
             int[] maxNumber = firstNumber;
 
@@ -115,8 +115,8 @@ namespace MyCalculator.Parsers
 
         public int[] MultiplyNumbers(int[] firstNumber, int[] secondNumber)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length > 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length > 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures(OperationsVerifier.CheckMultiply(firstNumber, secondNumber, Contract.Result<int[]>()));
             var result = new int[firstNumber.Length + secondNumber.Length];
             int carriage = 0;
@@ -147,8 +147,8 @@ namespace MyCalculator.Parsers
 
         public int[] DivideNumbers(int[] firstNumber, int[] secondNumber)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length > 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length > 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures(OperationsVerifier.CheckDivision(firstNumber, secondNumber, Contract.Result<int[]>()));
             Contract.EnsuresOnThrow<NotDivisibleException>(!OperationsVerifier.CheckDivisible(firstNumber,secondNumber));
             int skip = 0;
@@ -226,8 +226,8 @@ namespace MyCalculator.Parsers
         }
         public int[] DivideNumbersSubtraction(int[] firstNumber, int[] secondNumber,out int[] remainder)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length > 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length > 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures(OperationsVerifier.CheckDivision(firstNumber, secondNumber, Contract.Result<int[]>()));
             int[] result = new int[firstNumber.Length] ;
             while (Greater(firstNumber,secondNumber) || Equal(firstNumber,secondNumber))
@@ -253,7 +253,7 @@ namespace MyCalculator.Parsers
 
         public bool IsZero(int[] number)
         {
-            Contract.Requires<InvalidNumberArrayException>(number != null && number.Length==1);
+            Contract.Assert(number != null && number.Length==1);
 
             if (number.Length == 1 && number[0] == 0)
             {
@@ -268,7 +268,7 @@ namespace MyCalculator.Parsers
 
         public bool IsMultipleZero(int[] number)
         {
-            Contract.Requires<InvalidNumberArrayException>(number!=null);
+            Contract.Assert(number!=null);
             Contract.Ensures((Contract.Result<bool>() == true && number.All(digit => digit == 0))
                              || (Contract.Result<bool>() == false && number.Any(digit => digit != 0)));
             for (int count = number.Length - 1; count >= 0; count--)
@@ -283,8 +283,8 @@ namespace MyCalculator.Parsers
 
         public int[] RaiseToPower(int[] firstNumber, int[] secondNumber)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length > 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length > 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures(OperationsVerifier.CheckPower(firstNumber, secondNumber, Contract.Result<int[]>()));
             if (IsZero(secondNumber))
             {
@@ -308,7 +308,7 @@ namespace MyCalculator.Parsers
 
         public int[] SquareRoot(int[] number)
         {
-            Contract.Requires<InvalidNumberArrayException>(number != null && number.Length > 0);
+            Contract.Assert(number != null && number.Length > 0);
             Contract.Ensures(OperationsVerifier.CheckSquare(number, Contract.Result<int[]>()));
             int[] one = new[] { 1 };
             int[] left = new[] { 1 }, right = number;
@@ -348,8 +348,8 @@ namespace MyCalculator.Parsers
 
         public bool Greater(int[] firstNumber, int[] secondNumber,bool reversed=true)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length != 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length != 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures((Contract.Result<bool>() == true && OperationsVerifier.Greater(firstNumber, secondNumber))
                              || (Contract.Result<bool>() == false && !OperationsVerifier.Greater(firstNumber, secondNumber)));
             if (firstNumber.Length > secondNumber.Length)
@@ -384,8 +384,8 @@ namespace MyCalculator.Parsers
 
         public bool Equal(int[] firstNumber, int[] secondNumber)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber != null && firstNumber.Length != 0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber != null && secondNumber.Length != 0);
+            Contract.Assert(firstNumber != null && firstNumber.Length != 0);
+            Contract.Assert(secondNumber != null && secondNumber.Length != 0);
             Contract.Ensures((Contract.Result<bool>() == true && OperationsVerifier.Even(firstNumber, secondNumber))
                              || (Contract.Result<bool>() == false && !OperationsVerifier.Even(firstNumber, secondNumber)));
             if (firstNumber.Length != secondNumber.Length)
@@ -406,8 +406,8 @@ namespace MyCalculator.Parsers
 
         public bool Smaller(int[] firstNumber, int[] secondNumber,bool reversed=true)
         {
-            Contract.Requires<InvalidNumberArrayException>(firstNumber!=null && firstNumber.Length!=0);
-            Contract.Requires<InvalidNumberArrayException>(secondNumber!=null && secondNumber.Length!=0);
+            Contract.Assert(firstNumber!=null && firstNumber.Length!=0);
+            Contract.Assert(secondNumber!=null && secondNumber.Length!=0);
             Contract.Ensures((Contract.Result<bool>() == true && OperationsVerifier.Smaller(firstNumber,secondNumber))
                              || (Contract.Result<bool>() == false && !OperationsVerifier.Smaller(firstNumber, secondNumber)));
             if (firstNumber.Length < secondNumber.Length)
@@ -442,7 +442,7 @@ namespace MyCalculator.Parsers
 
         public int[] FormatResultArray(int[] result)
         {
-            Contract.Requires<InvalidNumberArrayException>(result!=null);
+            Contract.Assert(result!=null);
             Contract.Ensures(Contract.OldValue(result).Length == result.Length
                              || (Contract.OldValue(result).Length > result.Length && Contract.OldValue(result).Skip(result.Length).All(digit => digit == 0)));
             // if the number is zero return an array with only a digit

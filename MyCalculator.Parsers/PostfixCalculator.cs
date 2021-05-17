@@ -64,7 +64,7 @@ namespace MyCalculator.Parsers
 
         public int[] CalculateFromPostfix(List<string> postfix, out List<string> steps, bool convertSteps = true)
         {
-            Contract.Requires(postfix!=null && postfix.Count>0);
+            Contract.Assert(postfix!=null && postfix.Count>0);
             Contract.Ensures((!convertSteps && steps !=null && steps.Count==0) 
                              || (convertSteps && steps != null));
             Stack<int[]> result = new Stack<int[]>();

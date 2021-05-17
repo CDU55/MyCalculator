@@ -18,7 +18,7 @@ namespace MyCalculator.Parsers
 
         public List<string> ConvertToPostfix(List<string> tokens)
         {
-            Contract.Requires<ArgumentException>(tokens!=null && tokens.Count>0);
+            Contract.Assert(tokens!=null && tokens.Count>0);
             Contract.Ensures(Contract.Result<List<string>>().Count==tokens.Count);
             Contract.EnsuresOnThrow<UnpairedParenthesisException>(!ParserVerifier.CheckUnpairedParenthesis(tokens));
             int i = 0;
@@ -121,7 +121,7 @@ namespace MyCalculator.Parsers
 
         public bool IsLeftAssociative(string operatorString)
         {
-            Contract.Requires(operatorString!=null && operatorString.Length==1);
+            Contract.Assert(operatorString!=null && operatorString.Length==1);
             if (!_validator.IsOperator(operatorString))
             {
                 throw new InvalidOperatorException($"{operatorString} is not an operator");

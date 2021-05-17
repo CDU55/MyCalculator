@@ -10,7 +10,7 @@ namespace MyCalculator.Parsers
     {
         public static string ConvertToString(this int[] number)
         {
-            Contract.Requires(number!=null && number.Length>0);
+            Contract.Assert(number!=null && number.Length>0);
             string numberString = "";
             Contract.Ensures(Contract.ForAll(0, numberString.Length, index => numberString[index] == (number[numberString.Length - index - 1] - '0')));
             Contract.Ensures((numberString.Length == number.Length) || (numberString.Length < number.Length) && number[numberString.Length] == -1);
@@ -40,7 +40,7 @@ namespace MyCalculator.Parsers
 
         public static int[] ConvertToArrayNumber(this string number)
         {
-            Contract.Requires(!string.IsNullOrEmpty(number));
+            Contract.Assert(!string.IsNullOrEmpty(number));
 
             var numberArray = new int[number.Length];
             var arrayDigitIndex = 0;
